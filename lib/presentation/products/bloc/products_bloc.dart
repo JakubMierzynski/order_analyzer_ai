@@ -8,7 +8,31 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
 
   ProductsBloc(this.productRepository) : super(ProductsInitialState()) {
     on<LoadProductsEvent>(_onLoadProducts);
-    add(LoadProductsEvent()); 
+    add(LoadProductsEvent());
+
+    on<SearchProductEvent>(_onSearchProducts);
+  }
+
+  Future<void> _onSearchProducts(
+    SearchProductEvent event,
+    Emitter<ProductsState> emit,
+  ) async {
+    final currentState = state;
+
+    if (currentState is ProductsLoadedState) {
+      final filteredList = currentState.productsList
+          .where(
+            (product) =>
+                product.title.toLowerCase().contains(event.query.toLowerCase()),
+          )
+          .toList();
+      emit(
+        ProductsLoadedState(
+          productsList: currentState.productsList,
+          filteredProducts: filteredList,
+        ),
+      );
+    }
   }
 
   Future<void> _onLoadProducts(
@@ -20,7 +44,12 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
 
     try {
       final productsList = await productRepository.fetchProducts();
-      emit(ProductsLoadedState(productsList: productsList));
+      emit(
+        ProductsLoadedState(
+          productsList: productsList,
+          filteredProducts: productsList,
+        ),
+      );
       print("ProductsLoadedState");
     } catch (e) {
       emit(ProductsErrorState(message: e.toString()));
