@@ -6,9 +6,16 @@ import 'package:rekrutacja_ai_native/presentation/products/bloc/products_bloc.da
 import 'package:rekrutacja_ai_native/presentation/products/bloc/products_event.dart';
 import 'package:rekrutacja_ai_native/presentation/products/bloc/products_state.dart';
 
-class ProductsScreen extends StatelessWidget {
+class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
 
+  @override
+  State<StatefulWidget> createState() {
+    return _ProductsScreenState();
+  }
+}
+
+class _ProductsScreenState extends State<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,45 +116,6 @@ class ProductsScreen extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 15,
-        child: SizedBox(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadiusGeometry.circular(12),
-                ),
-                onPressed: () {},
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FaIcon(FontAwesomeIcons.list, color: Colors.black54,),
-                    Text("Products", style: TextStyle(color: Colors.black54)),
-                  ],
-                ),
-              ),
-              MaterialButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadiusGeometry.circular(12),
-                ),
-                onPressed: () {},
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FaIcon(FontAwesomeIcons.cartShopping, color: Colors.black54,),
-                    Text("Order", style: TextStyle(color: Colors.black54)),
-                  ],
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
