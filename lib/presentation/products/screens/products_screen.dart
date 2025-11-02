@@ -1,117 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rekrutacja_ai_native/domain/entities/product.dart';
 import 'package:rekrutacja_ai_native/presentation/products/bloc/products_bloc.dart';
 import 'package:rekrutacja_ai_native/presentation/products/bloc/products_event.dart';
 import 'package:rekrutacja_ai_native/presentation/products/bloc/products_state.dart';
 
-class ProductsScreen extends StatefulWidget {
+class ProductsScreen extends StatelessWidget {
   const ProductsScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    return _ProductsScreenState();
-  }
-}
-
-class _ProductsScreenState extends State<ProductsScreen> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(),
+      drawer: const Drawer(),
       appBar: AppBar(
-        title: Text("Products"),
+        title: const Text("Products"),
         backgroundColor: const Color.fromARGB(255, 246, 227, 227),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 50,
-                  width: 350,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search products...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      context.read<ProductsBloc>().add(
-                        SearchProductEvent(value),
-                      );
-                    },
-                  ),
+            TextField(
+              autocorrect: false,
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.search),
+                hintText: 'Search products...',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                SizedBox(width: 10),
-                Icon(Icons.search),
-              ],
+              ),
+              onChanged: (value) =>
+                  context.read<ProductsBloc>().add(SearchProductEvent(value)),
             ),
-            SizedBox(height: 15),
-            SizedBox(
-              height: 620,
+            const SizedBox(height: 15),
+            Expanded(
               child: BlocBuilder<ProductsBloc, ProductsState>(
                 builder: (context, state) {
                   if (state is ProductsLoadingState) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (state is ProductsErrorState) {
-                    return Text(state.message);
+                    return Center(child: Text(state.message));
                   } else if (state is ProductsLoadedState) {
-                    final List<Product> products = state.filteredProducts;
+                    final products = state.filteredProducts;
+                    if (products.isEmpty) return _noProductsMatchingCriteria();
 
-                    if (products.isEmpty) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            FaIcon(
-                              FontAwesomeIcons.ghost,
-                              size: 150,
-                              color: Colors.red,
-                            ),
-                            SizedBox(height: 25),
-                            Text(
-                              "No products matching criteria",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            Text("Try again", style: TextStyle(fontSize: 15)),
-                          ],
-                        ),
-                      );
-                    }
                     return ListView.builder(
                       itemCount: products.length,
                       itemBuilder: (context, index) {
                         final product = products[index];
-                        return Container(
-                          margin: EdgeInsets.symmetric(vertical: 6),
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 246, 227, 227),
+                        return Card(
+                          color: const Color.fromARGB(255, 246, 227, 227),
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
+                          margin: const EdgeInsets.symmetric(vertical: 6),
                           child: ListTile(
-                            leading: Icon(
+                            leading: const Icon(
                               Icons.label_important_rounded,
                               color: Colors.red,
                             ),
                             title: Text(product.title),
-                            subtitle: Text(product.price.toString()),
+                            subtitle: Text('${product.price}'),
                           ),
                         );
                       },
                     );
-                  } else {
-                    return Center(child: Text("No products loaded"));
                   }
+                  return const Center(child: Text("No products loaded"));
                 },
               ),
             ),
@@ -120,4 +75,20 @@ class _ProductsScreenState extends State<ProductsScreen> {
       ),
     );
   }
+
+  Widget _noProductsMatchingCriteria() => const Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        FaIcon(FontAwesomeIcons.ghost, size: 150, color: Colors.red),
+        SizedBox(height: 25),
+        Text(
+          "No products matching criteria",
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 5),
+        Text("Try again", style: TextStyle(fontSize: 15)),
+      ],
+    ),
+  );
 }
