@@ -5,14 +5,9 @@ import 'package:rekrutacja_ai_native/presentation/products/bloc/products_bloc.da
 import 'package:rekrutacja_ai_native/presentation/products/bloc/products_event.dart';
 import 'package:rekrutacja_ai_native/presentation/products/bloc/products_state.dart';
 
-class ProductsScreen extends StatefulWidget {
+class ProductsScreen extends StatelessWidget {
   const ProductsScreen({super.key});
 
-  @override
-  State<ProductsScreen> createState() => _ProductsScreenState();
-}
-
-class _ProductsScreenState extends State<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
