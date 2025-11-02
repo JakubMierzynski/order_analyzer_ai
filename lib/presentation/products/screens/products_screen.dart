@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:rekrutacja_ai_native/domain/entities/product.dart';
 import 'package:rekrutacja_ai_native/presentation/products/bloc/products_bloc.dart';
 import 'package:rekrutacja_ai_native/presentation/products/bloc/products_event.dart';
 import 'package:rekrutacja_ai_native/presentation/products/bloc/products_state.dart';
