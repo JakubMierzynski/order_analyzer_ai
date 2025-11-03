@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rekrutacja_ai_native/data/repositories/llm_repository.dart';
 import 'package:rekrutacja_ai_native/data/repositories/product_repository.dart';
+import 'package:rekrutacja_ai_native/domain/usecases/get_ai_response.dart';
 import 'package:rekrutacja_ai_native/presentation/home/screens/home_screen.dart';
+import 'package:rekrutacja_ai_native/presentation/order/bloc/order_bloc.dart';
 import 'package:rekrutacja_ai_native/presentation/products/bloc/products_bloc.dart';
 
 void main() {
@@ -15,12 +18,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProductRepository productsRepository = ProductRepository();
+    final getAIResponse = GetAiResponseUseCase(LLMRepository());
 
     return MultiBlocProvider(
       providers: [
         BlocProvider<ProductsBloc>(
           create: (context) => ProductsBloc(productsRepository),
         ),
+        BlocProvider<OrderBloc>(create: (context) => OrderBloc(getAIResponse)),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
