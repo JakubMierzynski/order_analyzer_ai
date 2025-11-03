@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:rekrutacja_ai_native/data/repositories/llm_repository.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -21,9 +22,12 @@ class _OrderScreenState extends State<OrderScreen> {
     super.dispose();
   }
 
-  // void _talkToAI() async {
-  //   String AiAnswer = await getOpenRouterResponse
-  // }
+  void _talkToAI() async {
+    String AiAnswer = await getLLMResponse(controller.text);
+    setState(() {
+      answer = AiAnswer;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +76,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     backgroundColor: const Color.fromARGB(255, 246, 227, 227),
                     foregroundColor: Colors.red,
                     elevation: 0,
-                    onPressed: () {},
+                    onPressed: _talkToAI,
                     child: Icon(Icons.send_rounded, size: 30),
                   ),
                 ],
