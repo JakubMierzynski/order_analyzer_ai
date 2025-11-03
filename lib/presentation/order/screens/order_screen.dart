@@ -11,6 +11,20 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
+  TextEditingController controller = TextEditingController();
+  String answer =
+      "od tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt ut sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  // void _talkToAI() async {
+  //   String AiAnswer = await getOpenRouterResponse
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,34 +37,48 @@ class _OrderScreenState extends State<OrderScreen> {
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
-            Center(child: Text("ASYSTENT ZAMÓWIENIA")),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: const FaIcon(FontAwesomeIcons.robot, size: 30, color: Colors.black54,),
-                      ),
-                      hintText: "Wpisz swoje zamówienie",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+            Center(
+              child: Text(
+                "ASYSTENT ZAMÓWIENIA",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: controller,
+                      decoration: InputDecoration(
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: const FaIcon(
+                            FontAwesomeIcons.robot,
+                            size: 30,
+                            color: Colors.red,
+                          ),
+                        ),
+                        hintText: "Wpisz swoje zamówienie",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(width: 10),
-                FloatingActionButton(
-                  backgroundColor: const Color.fromARGB(255, 246, 227, 227),
-                  foregroundColor: Colors.black54,
-                  elevation: 0,
-                  onPressed: () {},
-                  child: Icon(Icons.send_rounded, size: 30,),
-                ),
-              ],
+                  SizedBox(width: 10),
+                  FloatingActionButton(
+                    backgroundColor: const Color.fromARGB(255, 246, 227, 227),
+                    foregroundColor: Colors.red,
+                    elevation: 0,
+                    onPressed: () {},
+                    child: Icon(Icons.send_rounded, size: 30),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             Expanded(
               child: Card(
                 color: Color.fromARGB(255, 246, 227, 227),
@@ -68,6 +96,3 @@ class _OrderScreenState extends State<OrderScreen> {
     );
   }
 }
-
-const String answer =
-    "od tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt ut sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
