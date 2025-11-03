@@ -12,12 +12,12 @@ Future<String> getLLMResponse(String userInput) async {
     "Content-Type": "application/json",
   };
 
-  final body = {
+  final body = jsonEncode({
     "model": "minimax/minimax-m2:free",
     'messages': [
       {'role': 'user', 'content': "Prompt"},
     ],
-  };
+  });
 
   final response = await http.post(
     Uri.parse(endpoint),
