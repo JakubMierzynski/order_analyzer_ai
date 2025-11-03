@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Local AI config (do not commit sensitive API keys)
+lib/config/app_config.json

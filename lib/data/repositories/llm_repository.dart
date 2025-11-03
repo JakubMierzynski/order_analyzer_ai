@@ -1,12 +1,14 @@
 import "dart:convert";
-
 import "package:http/http.dart" as http;
+import "package:rekrutacja_ai_native/config/app_config.dart";
 
-Future<String> getLLMResponse(String userInput) async {
+Future<String> getLLMResponse(String userInput) async {\
+  final config = await AppConfig.load();
+
   const endpoint = "https://openrouter.ai/api/v1/chat/completions";
 
   final headers = {
-    "Authorization": "Bearer <OPENROUTER_API_KEY>",
+    "Authorization": "Bearer ${config.apiKey}",
     "Content-Type": "application/json",
   };
 
