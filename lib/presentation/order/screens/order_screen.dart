@@ -6,15 +6,13 @@ class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    return _OrderScreenState();
-  }
+  State<OrderScreen> createState() => _OrderScreenState();
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  TextEditingController controller = TextEditingController();
-  String answer =
-      "od tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt utsed do eiusmod tempor incididunt ut sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+  final TextEditingController controller = TextEditingController();
+  bool isLoading = false;
+  String answer = "";
 
   @override
   void dispose() {
@@ -22,11 +20,17 @@ class _OrderScreenState extends State<OrderScreen> {
     super.dispose();
   }
 
-  void _talkToAI() async {
-    String AiAnswer = await getLLMResponse(controller.text);
-    setState(() {
-      answer = AiAnswer;
-    });
+  Future<void> _talkToAI() async {
+    setState(() => isLoading = true);
+
+    try {
+      final aiAnswer = await getLLMResponse(controller.text);
+      setState(() => answer = aiAnswer);
+    } catch (e) {
+      setState(() => answer = "Błąd podczas komunikacji z AI: $e");
+    } finally {
+      setState(() => isLoading = false);
+    }
   }
 
   @override
@@ -34,20 +38,20 @@ class _OrderScreenState extends State<OrderScreen> {
     return Scaffold(
       drawer: const Drawer(),
       appBar: AppBar(
-        title: Text("Orders"),
-        backgroundColor: const Color.fromARGB(255, 246, 227, 227),
+        title: const Text("Orders"),
+        backgroundColor: Color.fromARGB(255, 246, 227, 227),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            Center(
+            const Center(
               child: Text(
                 "ASYSTENT ZAMÓWIENIA",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 6),
               child: Row(
@@ -56,9 +60,9 @@ class _OrderScreenState extends State<OrderScreen> {
                     child: TextField(
                       controller: controller,
                       decoration: InputDecoration(
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: const FaIcon(
+                        prefixIcon: const Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: FaIcon(
                             FontAwesomeIcons.robot,
                             size: 30,
                             color: Colors.red,
@@ -71,31 +75,66 @@ class _OrderScreenState extends State<OrderScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   FloatingActionButton(
                     backgroundColor: const Color.fromARGB(255, 246, 227, 227),
                     foregroundColor: Colors.red,
                     elevation: 0,
-                    onPressed: _talkToAI,
-                    child: Icon(Icons.send_rounded, size: 30),
+                    onPressed: isLoading ? null : _talkToAI,
+                    child: isLoading
+                        ? const Padding(
+                            padding: EdgeInsets.all(15.0),
+                            child: CircularProgressIndicator(
+                              color: Colors.red,
+                              strokeWidth: 3,
+                            ),
+                          )
+                        : const Icon(Icons.send_rounded, size: 30),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
               child: Card(
-                color: Color.fromARGB(255, 246, 227, 227),
+                color: const Color.fromARGB(255, 246, 227, 227),
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: SingleChildScrollView(
-                    child: Text(answer, style: TextStyle(fontSize: 20)),
-                  ),
+                  child: answer.isEmpty
+                      ? _buildEmptyState()
+                      : SingleChildScrollView(
+                          child: Text(
+                            answer,
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                        ),
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: const [
+          FaIcon(FontAwesomeIcons.basketShopping, color: Colors.red, size: 80),
+          SizedBox(height: 10),
+          Text(
+            "Brak zamówień",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 10),
+          Text(
+            "Dodaj zamówienie z pomocą naszego asystenta",
+            style: TextStyle(fontSize: 25),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }
