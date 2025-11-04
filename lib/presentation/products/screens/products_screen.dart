@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rekrutacja_ai_native/presentation/products/bloc/products_bloc.dart';
 import 'package:rekrutacja_ai_native/presentation/products/bloc/products_event.dart';
 import 'package:rekrutacja_ai_native/presentation/products/bloc/products_state.dart';
+import 'package:rekrutacja_ai_native/presentation/products/widgets/no_products_matching.dart';
+import 'package:rekrutacja_ai_native/presentation/products/widgets/products_exception_widget.dart';
 
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({super.key});
@@ -13,7 +14,7 @@ class ProductsScreen extends StatelessWidget {
     return Scaffold(
       drawer: const Drawer(),
       appBar: AppBar(
-        title: const Text("Products"),
+        title: const Text("Produkty"),
         backgroundColor: const Color.fromARGB(255, 246, 227, 227),
       ),
       body: Padding(
@@ -24,7 +25,7 @@ class ProductsScreen extends StatelessWidget {
               autocorrect: false,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
-                hintText: 'Search products...',
+                hintText: 'Wyszukaj produkt...',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -39,10 +40,10 @@ class ProductsScreen extends StatelessWidget {
                   if (state is ProductsLoadingState) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is ProductsErrorState) {
-                    return Center(child: Text(state.message));
+                    return ProductsExceptionWidget(message: state.message);
                   } else if (state is ProductsLoadedState) {
                     final products = state.filteredProducts;
-                    if (products.isEmpty) return _noProductsMatchingCriteria();
+                    if (products.isEmpty) return NoProductsMatching();
 
                     return ListView.builder(
                       itemCount: products.length,
@@ -66,7 +67,7 @@ class ProductsScreen extends StatelessWidget {
                       },
                     );
                   }
-                  return const Center(child: Text("No products loaded"));
+                  return const SizedBox.shrink();
                 },
               ),
             ),
@@ -75,20 +76,4 @@ class ProductsScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget _noProductsMatchingCriteria() => const Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        FaIcon(FontAwesomeIcons.ghost, size: 150, color: Colors.red),
-        SizedBox(height: 25),
-        Text(
-          "No products matching criteria",
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 5),
-        Text("Try again", style: TextStyle(fontSize: 15)),
-      ],
-    ),
-  );
 }
