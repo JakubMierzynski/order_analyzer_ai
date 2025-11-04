@@ -40,8 +40,6 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     Emitter<ProductsState> emit,
   ) async {
     emit(ProductsLoadingState());
-    print("ProductsLoadingState");
-
     try {
       final productsList = await productRepository.fetchProducts();
       emit(
@@ -50,10 +48,8 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
           filteredProducts: productsList,
         ),
       );
-      print("ProductsLoadedState");
     } catch (e) {
       emit(ProductsErrorState(message: e.toString()));
-      print(e.toString());
     }
   }
 }

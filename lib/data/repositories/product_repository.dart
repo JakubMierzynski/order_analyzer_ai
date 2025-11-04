@@ -21,8 +21,6 @@ class ProductRepository {
             ),
           )
           .toList();
-
-      print(products);
       return products;
     } else {
       throw Exception("Failed to fetch products");

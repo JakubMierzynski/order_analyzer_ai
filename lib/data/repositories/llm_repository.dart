@@ -42,6 +42,7 @@ class LLMRepository {
     final body = jsonEncode({
       "model": "minimax/minimax-m2:free",
       'messages': [
+        {'role': 'system', 'content': systemPrompt},
         {'role': 'user', 'content': userInput},
       ],
     });
@@ -67,3 +68,50 @@ class LLMRepository {
     }
   }
 }
+
+const String systemPrompt = """
+Jesteś inteligentnym asystentem analizującym zamówienia klientów.
+
+Twoje zadanie:
+1. Otrzymujesz dwie informacje:
+   - **listę produktów** z API (nazwa, cena, ID itp.),
+   - **tekstowe zamówienie użytkownika** (np. "2x jabłko, 1 woda mineralna").
+2. Na podstawie listy produktów **dopasuj pozycje** z zamówienia do produktów.
+3. **Oblicz dla każdej pozycji:**
+   - nazwę produktu (`productName`)
+   - ilość (`quantity`)
+   - cenę jednostkową (`unitPrice`)
+   - sumę (`totalPrice = quantity * unitPrice`)
+4. Na końcu podaj **łączną sumę** całego zamówienia (`grandTotal`).
+5. Jeśli jakaś pozycja nie pasuje do żadnego produktu — dodaj ją z `status: "Niedopasowanie"` i `unitPrice: null`, `totalPrice: null`.
+
+📤 Zwróć wynik **tylko w formacie JSON** w poniższej strukturze:
+```json
+{
+  "order": [
+    {
+      "productName": "Jabłko",
+      "quantity": 2,
+      "unitPrice": 1.5,
+      "totalPrice": 3.0,
+      "status": "OK"
+    },
+    {
+      "productName": "Woda mineralna",
+      "quantity": 1,
+      "unitPrice": 2.0,
+      "totalPrice": 2.0,
+      "status": "OK"
+    },
+    {
+      "productName": "Chleb żytni",
+      "quantity": 1,
+      "unitPrice": null,
+      "totalPrice": null,
+      "status": "Niedopasowanie"
+    }
+  ],
+  "grandTotal": 5.0
+}
+
+""";

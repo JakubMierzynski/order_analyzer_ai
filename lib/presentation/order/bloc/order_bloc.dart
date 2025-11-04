@@ -2,15 +2,39 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rekrutacja_ai_native/domain/usecases/get_ai_response.dart';
 import 'package:rekrutacja_ai_native/presentation/order/bloc/order_event.dart';
 import 'package:rekrutacja_ai_native/presentation/order/bloc/order_state.dart';
+import 'package:rekrutacja_ai_native/presentation/products/bloc/products_bloc.dart';
+import 'package:rekrutacja_ai_native/presentation/products/bloc/products_state.dart';
 
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
   final GetAiResponseUseCase getAIResponse;
+  final ProductsBloc productsBloc;
 
-  OrderBloc(this.getAIResponse) : super(OrderInitial()) {
+  OrderBloc(this.getAIResponse, this.productsBloc) : super(OrderInitial()) {
     on<SendOrderEvent>((event, emit) async {
       emit(OrderLoading());
       try {
-        final answer = await getAIResponse(event.prompt);
+        final productsState = productsBloc.state;
+        final products = productsState is ProductsLoadedState
+            ? productsState.productsList
+            : [];
+
+        final prompt =
+            """
+Lista produktów (id, nazwa, cena):
+${products.map((p) => "${p.id}. ${p.title} - ${p.price}").join("\n")}
+
+Zamówienie użytkownika:
+${event.prompt}
+
+Twoje zadanie:
+Dopasuj produkty do listy powyżej. Oblicz ilość * cena = suma.
+Zwróć wynik jako JSON w formacie:
+[
+  {"product": "nazwa", "quantity": X, "unit_price": Y, "sum": Z},
+  {"total": SumaWszystkich}
+]
+""";
+        final answer = await getAIResponse(prompt);
         emit(OrderSuccess(answer));
       } catch (e) {
         emit(OrderError(e.toString()));
