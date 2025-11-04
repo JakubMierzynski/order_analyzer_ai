@@ -26,11 +26,16 @@ class NetworkException implements Exception {
 class LLMRepository {
   Future<String> getLLMResponse(String userInput) async {
     final config = await AppConfig.load();
+    final apiKey = config.apiKey;
+
+    if (apiKey.isEmpty) {
+      throw InvalidApiKeyException("Brak api key");
+    }
 
     const endpoint = "https://openrouter.ai/api/v1/chat/completions";
 
     final headers = {
-      "Authorization": "Bearer ${config.apiKey}",
+      "Authorization": "Bearer $apiKey",
       "Content-Type": "application/json",
     };
 
