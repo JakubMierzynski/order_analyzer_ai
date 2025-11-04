@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rekrutacja_ai_native/data/repositories/llm_repository.dart';
+import 'package:rekrutacja_ai_native/presentation/order/bloc/order_bloc.dart';
+import 'package:rekrutacja_ai_native/presentation/order/bloc/order_event.dart';
+import 'package:rekrutacja_ai_native/presentation/order/bloc/order_state.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -11,26 +15,11 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   final TextEditingController controller = TextEditingController();
-  bool isLoading = false;
-  String answer = "";
 
   @override
   void dispose() {
     controller.dispose();
     super.dispose();
-  }
-
-  Future<void> _talkToAI() async {
-    setState(() => isLoading = true);
-
-    try {
-      final aiAnswer = await getLLMResponse(controller.text);
-      setState(() => answer = aiAnswer);
-    } catch (e) {
-      setState(() => answer = "Błąd podczas komunikacji z AI: $e");
-    } finally {
-      setState(() => isLoading = false);
-    }
   }
 
   @override
@@ -76,40 +65,67 @@ class _OrderScreenState extends State<OrderScreen> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  FloatingActionButton(
-                    backgroundColor: const Color.fromARGB(255, 246, 227, 227),
-                    foregroundColor: Colors.red,
-                    elevation: 0,
-                    onPressed: isLoading ? null : _talkToAI,
-                    child: isLoading
-                        ? const Padding(
-                            padding: EdgeInsets.all(15.0),
-                            child: CircularProgressIndicator(
-                              color: Colors.red,
-                              strokeWidth: 3,
-                            ),
-                          )
-                        : const Icon(Icons.send_rounded, size: 30),
+                  BlocBuilder<OrderBloc, OrderState>(
+                    builder: (context, state) {
+                      final isLoading = state is OrderLoading;
+
+                      return FloatingActionButton(
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          246,
+                          227,
+                          227,
+                        ),
+                        foregroundColor: Colors.red,
+                        elevation: 0,
+                        onPressed: isLoading
+                            ? null
+                            : () {
+                                context.read<OrderBloc>().add(
+                                  SendOrderEvent(controller.text),
+                                );
+                              },
+                        child: isLoading
+                            ? const Padding(
+                                padding: EdgeInsets.all(15.0),
+                                child: CircularProgressIndicator(
+                                  color: Colors.red,
+                                  strokeWidth: 3,
+                                ),
+                              )
+                            : const Icon(Icons.send_rounded, size: 30),
+                      );
+                    },
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 10),
-            Expanded(
-              child: Card(
-                color: const Color.fromARGB(255, 246, 227, 227),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: answer.isEmpty
-                      ? _buildEmptyState()
-                      : SingleChildScrollView(
-                          child: Text(
-                            answer,
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                        ),
-                ),
-              ),
+            BlocBuilder<OrderBloc, OrderState>(
+              builder: (context, state) {
+                Widget content;
+
+                if (state is OrderError) {
+                  content = _buildErrorState(state.message);
+                } else if (state is OrderSuccess) {
+                  content = SingleChildScrollView(
+                    child: Text(state.answer, style: TextStyle(fontSize: 20)),
+                  );
+                } else {
+                  // OrderInitial lub OrderLoading
+                  content = _buildEmptyState();
+                }
+
+                return Expanded(
+                  child: Card(
+                    color: const Color.fromARGB(255, 246, 227, 227),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: content,
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -132,6 +148,32 @@ class _OrderScreenState extends State<OrderScreen> {
           Text(
             "Dodaj zamówienie z pomocą naszego asystenta",
             style: TextStyle(fontSize: 25),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorState(String errorMessage) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FaIcon(
+            FontAwesomeIcons.triangleExclamation,
+            color: Colors.red,
+            size: 80,
+          ),
+          SizedBox(height: 20),
+          Text(
+            "Wystąpił błąd podczas łączenia z asystentem",
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 20),
+          Text(
+            "Sprawdź połączenie z internetem lub spróbuj ponownie później",
+            style: TextStyle(fontSize: 20),
             textAlign: TextAlign.center,
           ),
         ],
