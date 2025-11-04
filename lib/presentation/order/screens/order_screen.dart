@@ -5,6 +5,7 @@ import 'package:rekrutacja_ai_native/data/repositories/llm_repository.dart';
 import 'package:rekrutacja_ai_native/presentation/order/bloc/order_bloc.dart';
 import 'package:rekrutacja_ai_native/presentation/order/bloc/order_event.dart';
 import 'package:rekrutacja_ai_native/presentation/order/bloc/order_state.dart';
+import 'package:rekrutacja_ai_native/presentation/order/widgets/order_table.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -109,7 +110,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   content = _buildErrorState(state.message);
                 } else if (state is OrderSuccess) {
                   content = SingleChildScrollView(
-                    child: Text(state.answer, style: TextStyle(fontSize: 20)),
+                    child: OrderTable(orderResult: state.answer),
                   );
                 } else {
                   // OrderInitial lub OrderLoading
