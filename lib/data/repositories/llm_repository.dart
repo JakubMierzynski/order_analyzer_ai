@@ -83,7 +83,7 @@ Twoje zadanie:
    - cenę jednostkową (`unitPrice`)
    - sumę (`totalPrice = quantity * unitPrice`)
 4. Na końcu podaj **łączną sumę** całego zamówienia (`grandTotal`).
-   - Oblicz grandTotal **sumując** totalPrice wszystkich elementów
+   - Oblicz grandTotal **sumując** totalPrice wszystkich dopasowanych elementów
 5. Jeśli jakaś pozycja nie pasuje do żadnego produktu — dodaj ją z `status: "Niedopasowanie"` i `unitPrice: null`, `totalPrice: null`.
 
 Nie dodawaj żadnego komentarza, wyjaśnienia, ani znaczników kodu.
