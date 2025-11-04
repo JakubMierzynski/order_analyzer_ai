@@ -29,7 +29,7 @@ class LLMRepository {
     final apiKey = config.apiKey;
 
     if (apiKey.isEmpty) {
-      throw InvalidApiKeyException("Brak api key");
+      throw InvalidApiKeyException("Brak klucza api");
     }
 
     const endpoint = "https://openrouter.ai/api/v1/chat/completions";
