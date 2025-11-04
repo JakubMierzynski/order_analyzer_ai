@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rekrutacja_ai_native/domain/entities/order_result.dart';
 import 'package:rekrutacja_ai_native/domain/usecases/get_ai_response.dart';
 import 'package:rekrutacja_ai_native/presentation/order/bloc/order_event.dart';
 import 'package:rekrutacja_ai_native/presentation/order/bloc/order_state.dart';
@@ -28,14 +31,39 @@ ${event.prompt}
 
 Twoje zadanie:
 Dopasuj produkty do listy powyżej. Oblicz ilość * cena = suma.
-Zwróć wynik jako JSON w formacie:
-[
-  {"product": "nazwa", "quantity": X, "unit_price": Y, "sum": Z},
-  {"total": SumaWszystkich}
-]
+Zwróć wynik **tylko w formacie JSON** w poniższej strukturze:
+{
+  "order": [
+    {
+      "productName": "Jabłko",
+      "quantity": 2,
+      "unitPrice": 1.5,
+      "totalPrice": 3.0,
+      "status": "OK"
+    },
+    {
+      "productName": "Woda mineralna",
+      "quantity": 1,
+      "unitPrice": 2.0,
+      "totalPrice": 2.0,
+      "status": "OK"
+    },
+    {
+      "productName": "Chleb żytni",
+      "quantity": 1,
+      "unitPrice": null,
+      "totalPrice": null,
+      "status": "Niedopasowanie"
+    }
+  ],
+  "grandTotal": 5.0
+}
 """;
         final answer = await getAIResponse(prompt);
-        emit(OrderSuccess(answer));
+        final jsonResponse = jsonDecode(answer);
+        final orderResult = OrderResult.fromJson(jsonResponse);
+
+        emit(OrderSuccess(orderResult));
       } catch (e) {
         emit(OrderError(e.toString()));
       }

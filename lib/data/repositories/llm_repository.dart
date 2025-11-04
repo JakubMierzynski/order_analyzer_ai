@@ -85,8 +85,10 @@ Twoje zadanie:
 4. Na końcu podaj **łączną sumę** całego zamówienia (`grandTotal`).
 5. Jeśli jakaś pozycja nie pasuje do żadnego produktu — dodaj ją z `status: "Niedopasowanie"` i `unitPrice: null`, `totalPrice: null`.
 
-📤 Zwróć wynik **tylko w formacie JSON** w poniższej strukturze:
-```json
+Nie dodawaj żadnego komentarza, wyjaśnienia, ani znaczników kodu.
+Nie używaj formatowania Markdown ani żadnych znaków spoza JSON-a.
+Zwróć wynik **tylko w formacie JSON** w poniższej strukturze:
+
 {
   "order": [
     {
