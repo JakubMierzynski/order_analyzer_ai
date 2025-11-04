@@ -172,7 +172,8 @@ class _OrderScreenState extends State<OrderScreen> {
           ),
           SizedBox(height: 20),
           Text(
-            "Sprawdź połączenie z internetem lub spróbuj ponownie później",
+            // "Sprawdź połączenie z internetem lub spróbuj ponownie później",
+            errorMessage,
             style: TextStyle(fontSize: 20),
             textAlign: TextAlign.center,
           ),
