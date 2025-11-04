@@ -1,3 +1,5 @@
+import 'package:rekrutacja_ai_native/domain/entities/order_result.dart';
+
 abstract class OrderState {}
 
 class OrderInitial extends OrderState {}
@@ -5,7 +7,7 @@ class OrderInitial extends OrderState {}
 class OrderLoading extends OrderState {}
 
 class OrderSuccess extends OrderState {
-  final String answer;
+  final OrderResult answer;
   OrderSuccess(this.answer);
 }
 
