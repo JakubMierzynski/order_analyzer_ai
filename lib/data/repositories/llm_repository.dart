@@ -4,16 +4,24 @@ import "package:rekrutacja_ai_native/config/app_config.dart";
 
 class LLMException implements Exception {
   final String message;
-
   LLMException(this.message);
+
+  @override
+  String toString() => message;
 }
 
 class InvalidApiKeyException implements Exception {
   final String message;
   InvalidApiKeyException([this.message = "Nieprawidłowy klucz API"]);
+
+  @override
+  String toString() => message;
 }
 
-class NetworkException implements Exception {}
+class NetworkException implements Exception {
+  @override
+  String toString() => "Brak połączenia z internetem.";
+}
 
 class LLMRepository {
   Future<String> getLLMResponse(String userInput) async {
