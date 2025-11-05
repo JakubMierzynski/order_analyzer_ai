@@ -27,7 +27,7 @@ class _OrderScreenState extends State<OrderScreen> {
     return Scaffold(
       drawer: const Drawer(),
       appBar: AppBar(
-        title: const Text("Orders"),
+        title: const Text("Zamówienia"),
         backgroundColor: Color.fromARGB(255, 246, 227, 227),
       ),
       body: Padding(
