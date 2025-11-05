@@ -75,7 +75,6 @@ class OrderTable extends StatelessWidget {
                   color: Colors.red,
                 ),
               ),
-              const SizedBox(height: 8),
               buildUnmachedColumn(unmatchedItems),
             ],
           ],
