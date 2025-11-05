@@ -34,12 +34,12 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               _buildNavItem(
                 icon: FontAwesomeIcons.list,
-                label: "Products",
+                label: "Produkty",
                 index: 0,
               ),
               _buildNavItem(
                 icon: FontAwesomeIcons.cartShopping,
-                label: "Order",
+                label: "Zamówienia",
                 index: 1,
               ),
             ],
