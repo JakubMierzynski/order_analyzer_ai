@@ -29,7 +29,7 @@ Od tego momentu asystent AI będzie mógł:
 	- zwracać zamówienie domyślnie w postaci JSON.
 
 
-<img width="431" height="932" alt="Zrzut ekranu 2025-11-5 o 10 45 49" src="https://github.com/user-attachments/assets/47a6ee31-b278-488c-b87a-6e17238a76c9" />
-<img width="433" height="934" alt="Zrzut ekranu 2025-11-5 o 10 45 40" src="https://github.com/user-attachments/assets/890a855a-cd87-4f1a-8e4d-63a76a2ee080" />
-<img width="432" height="935" alt="Zrzut ekranu 2025-11-5 o 10 44 54" src="https://github.com/user-attachments/assets/c2584460-0656-4088-9776-b980298f86f3" />
-<img width="433" height="942" alt="Zrzut ekranu 2025-11-5 o 10 44 24" src="https://github.com/user-attachments/assets/de32f4a5-8f1f-4633-8050-6d4325b98f06" />
+<img width="432" height="935" alt="Produkty" src="https://github.com/user-attachments/assets/97a3665e-ee72-44de-ac7e-4d58d2ca22f1" />
+<img width="433" height="934" alt="Brak produktu" src="https://github.com/user-attachments/assets/2d1df14c-1b30-443a-9d35-1474cc333d0a" />
+<img width="431" height="932" alt="Asystent zamówienia" src="https://github.com/user-attachments/assets/f2322b21-cf57-4f3d-bceb-64e93c813244" />
+<img width="433" height="942" alt="Zamówienie" src="https://github.com/user-attachments/assets/e4bbd01f-f68c-45ad-946d-9d8d7ac2fd26" />
