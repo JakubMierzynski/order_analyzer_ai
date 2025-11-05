@@ -81,40 +81,7 @@ class OrderTable extends StatelessWidget {
         ),
       );
     } else {
-      return Column(
-        children: [
-          const Text(
-            "Nie udało się dopasować:",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.red,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Column(
-            children: unmatchedItems.map((item) {
-              return Container(
-                width: double.infinity,
-                margin: const EdgeInsets.only(bottom: 6),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.red.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
-                ),
-                child: Text(
-                  "• ${item.productName} (ilość: ${item.quantity ?? '-'})",
-                  style: const TextStyle(fontSize: 18, color: Colors.red),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
-      );
+      return buildUnmachedColumn(unmatchedItems);
     }
   }
 }
