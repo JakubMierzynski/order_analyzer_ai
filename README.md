@@ -1,5 +1,9 @@
 Konfiguracja AI (OpenRouter)
 
+Aplikacja pobiera listę produktów z API i umożliwia stworzenie "zamówienia" z pomocą wbudowanego asystenta AI. 
+Asystent analizuje zamówienie, dopasowuje produkty, oblicza sumy oraz zwraca wynik w formie JSON.
+Użytkownikowi zostaje przedstawiona tabela podsumowująca zamówienie oraz produkty, które w zamówieniu wystąpiły a nie zostały dopasowane do listy dostępnym produktów.
+
 Kod pisany i testowany na symulatorze Iphone 16 pro max. Aplikacja nie jest dostosowana do innych rozmiarów ekranu. 
 
 Aplikacja wykorzystuje OpenRouter API, które umożliwia komunikację z modelem językowym (LLM) do analizy zamówień użytkownika.
