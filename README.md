@@ -26,7 +26,7 @@ Od tego momentu asystent AI będzie mógł:
 	- odbierać i analizować zamówienia użytkownika
 	- porównywać je z listą dostępnych produktów
 	- zwracać podsumowanie zamówienia lub komunikat o błędzie.
-	- zwracać zamówienie domyślnie w postaci JSON.
+    - zwracać zamówienie domyślnie w postaci JSON.
 
 
 <img width="432" height="935" alt="Produkty" src="https://github.com/user-attachments/assets/97a3665e-ee72-44de-ac7e-4d58d2ca22f1" />
